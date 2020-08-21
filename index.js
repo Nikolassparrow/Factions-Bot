@@ -5,6 +5,7 @@ const { builtinModules } = require("module");
 const fs = require("fs");
 const tpsPlugin = require('mineflayer-tps')(mineflayer)
 let config = JSON.parse(fs.readFileSync('./config.json'))
+const {usage, warning} = require('./Storage/functions');
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -12,6 +13,7 @@ client.commands = new Discord.Collection();
 var stdin = process.openStdin()   
 
 var prefix = { value: config.general.prefix };
+let guild = config.channelIDs.guild;
 let chatData = { chat: [], hover: [] };
 let serverchat = {chat: []};
 let saving = { chat: false, hover: false };
@@ -30,6 +32,11 @@ let options = {
 };
 var bot = { client: mineflayer.createBot(options)};
 bot.client.loadPlugin(tpsPlugin);
+
+function getChannel(id){
+    return client.guilds.cache.get(config.channelIDs.guild).channels.cache.get(id)
+}
+
 client.on("ready", async () => {
     console.log(`Discord Bot Online @ ${config.general.serverIP}`)
 
@@ -38,8 +45,26 @@ client.on("ready", async () => {
     })
 });
 
-client.on("guildMemberAdd", async member => {
+client.on("guildMemberAdd", member => {
+    if(!getChannel(config.channelIDs.joinchannelID)) return
+    let server = client.guilds.cache.get(guild)
 
+    const embed = new Discord.MessageEmbed()
+        .setDescription(`<@${member.user.id}> joined ${server}`)
+        .setColor(config.general.embedColor)
+        .setTimestamp(new Date())
+    getChannel(config.channelIDs.joinchannelID).send(embed)
+})
+
+client.on("guildMemberRemove", member => {
+    if(!getChannel(config.channelIDs.leavechannelID)) return
+    let server = client.guilds.cache.get(guild)
+
+    const embed = new Discord.MessageEmbed()
+        .setDescription(`<@${member.user.id}> left ${server}`)
+        .setColor(config.general.embedColor)
+        .setTimestamp(new Date())
+    getChannel(config.channelIDs.leavechannelID).send(embed)
 })
 
 client.on('message', message => {
