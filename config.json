@@ -1,23 +1,23 @@
 {
   "general": {
-    "token": "NzA0NzY4ODYwMTc1MjA0ODU2.Xu2BdA.1aj2aBqCCFQLMSDfAbcYYVp05hA",
+    "token": "",
     "prefix": ".",
     "version": "1.8",
     "serverIP": "play.vanitymc.co",
-    "username": "gizzichristina42@gmail.com",
-    "password": "Jennifer721!",
+    "username": "",
+    "password": "",
     "embedColor": "#DF9A9A",
     "hub_command": "/demonic",
     "FtopCommand": "/f top"
   },
   "channelIDs": {
-    "serverchatID": "725607875350888449",
+    "serverchatID": "",
     "joinchannelID": "null",
     "leavechannelID": "null",
-    "modlogschannelID": "725607806329159721",
+    "modlogschannelID": "",
     "wallschannelID": "null",
     "bufferchannelID": "null",
-    "debugchannelID": "744925106916032593"
+    "debugchannelID": ""
   },
   "enableCommands": {
     "baltop": true,
