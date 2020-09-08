@@ -33,27 +33,35 @@ let options = {
 var bot = { client: mineflayer.createBot(options)};
 bot.client.loadPlugin(tpsPlugin);
 
-function getChannel(id){
-    return client.guilds.cache.get(config.channelIDs.guild).channels.cache.get(id)
-}
-
 client.on("ready", async () => {
     console.log(`Discord Bot Online @ ${config.general.serverIP}`)
 
     client.user.setActivity({
         name: `${config.general.serverIP}`,
     })
+
+    setTimeout(() => {
+        client.guilds.cache.forEach(g => {
+            g.fetchInvites().then(guildInvites => {
+                invites[g.id] = guildInvites;
+            })
+        })
+    })
 });
 
 client.on("guildMemberAdd", member => {
-    if(!getChannel(config.channelIDs.joinchannelID)) return
-    let server = client.guilds.cache.get(guild)
-
-    const embed = new Discord.MessageEmbed()
-        .setDescription(`<@${member.user.id}> joined ${server}`)
-        .setColor(config.general.embedColor)
-        .setTimestamp(new Date())
-    getChannel(config.channelIDs.joinchannelID).send(embed)
+    if(!getChannel(member, config.channelIDs.joinchannelID)) return
+    member.guild.fetchInvites.then(guildInvites => {
+        const exisitingInvites = invites[member.guild.id];
+        invites[member.guild.id] = guildInvites;
+        const invite = guildInvites.find(i => exisitingInvites.get(i.code).uses < i.uses);
+        const inviter = client.users.get(invite.inviter.id);
+        const embed = new Discord.MessageEmbed()
+            .setDescription(`<@${member.guild.id} **joined**; Invited by **${inviter.username}** (**${invite.uses}** invites)>`)
+            .setColor(config.general.embedColor)
+            .setTimestamp(new Date())
+        getChannel(member, config.channelIDs.joinchannelID).send(embed)
+    })
 })
 
 client.on("guildMemberRemove", member => {
@@ -91,8 +99,7 @@ client.on('message', message => {
             command.execute(message, args, prefix)
         } 
     } catch (err) {
-        let debugchan = client.channels.cache.get(config.channelIDs.debugchannelID)
-        debugchan.send(`\`\`\`${err}\`\`\``)
+        message.channel.send(`\`\`\`${err}\`\`\``)
     }
 });
 
@@ -138,12 +145,18 @@ bot.client.on("windowOpen", function (window) {
     bot.client.closeWindow(window)
 })
 
+bot.client._client.on("scoreboard_score", packet => {
+    let allP = [];
+    allP.push(packet.itemName)
+    console.log(allP)
+})
+
 bot.client._client.on("scoreboard_team", function (packet){
-    let vanishUsers = JSON.parse(fs.readFileSync('./vanishusers.json'))
+    let vanishUsers = JSON.parse(fs.readFileSync('./Storage/vanishusers.json'))
     let packetinfo = JSON.stringify(packet.players)
     for(let i in packetinfo){
         if(!vanishUsers.includes(i) && i != null){
-          //  chatData.chat.push(i)
+           // chatData.chat.push(i)
            // console.log(chatData.chat)
         }
     }
@@ -153,7 +166,7 @@ bot.client._client.on("scoreboard_team", function (packet){
    // }  
 })
 
-bot.client.on("message",  message => {
+bot.client.on("message", async message => {
     let serverChatID = client.channels.cache.get(config.channelIDs.serverchatID)
     console.log(message.toAnsi())
     let parsedMsg = `${message}`;

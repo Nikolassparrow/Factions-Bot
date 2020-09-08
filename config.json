@@ -11,13 +11,12 @@
     "FtopCommand": "/f top"
   },
   "channelIDs": {
-    "serverchatID": "",
+    "serverchatID": "null",
     "joinchannelID": "null",
     "leavechannelID": "null",
-    "modlogschannelID": "",
+    "modlogschannelID": "null",
     "wallschannelID": "null",
-    "bufferchannelID": "null",
-    "debugchannelID": ""
+    "bufferchannelID": "null"
   },
   "enableCommands": {
     "baltop": true,
@@ -33,6 +32,7 @@
     "koth": true,
     "leaves": true,
     "lms": true,
+    "lock": true,
     "mctop": true,
     "purge": true,
     "raredrop": true,
@@ -41,6 +41,7 @@
     "serverchat": true,
     "sudo": true,
     "tps": true,
+    "unlock": true,
     "vanish": true,
     "walls": true
   }

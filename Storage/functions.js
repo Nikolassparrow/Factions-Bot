@@ -57,6 +57,10 @@ module.exports =  {
                 .setDescription(":white_check_mark: " + sent)
                 .setColor(config.general.embedColor);
             message.channel.send(embed); 
+    },
+
+    getchannel: function(message, id){
+        return message.guild.channels.cache.get(id)
     }
 
 }
