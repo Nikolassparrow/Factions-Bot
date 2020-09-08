@@ -13,10 +13,10 @@ client.commands = new Discord.Collection();
 var stdin = process.openStdin()   
 
 var prefix = { value: config.general.prefix };
-let guild = config.channelIDs.guild;
 let chatData = { chat: [], hover: [] };
 let serverchat = {chat: []};
 let saving = { chat: false, hover: false };
+let invites = {};
 let regex = { regex: new RegExp() };
 
 for (const file of commandFiles) {
@@ -148,7 +148,7 @@ bot.client.on("windowOpen", function (window) {
 bot.client._client.on("scoreboard_score", packet => {
     let allP = [];
     allP.push(packet.itemName)
-    console.log(allP)
+    //console.log(allP)
 })
 
 bot.client._client.on("scoreboard_team", function (packet){
