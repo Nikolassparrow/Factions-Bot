@@ -1,6 +1,6 @@
 const config = require('../config.json')
 const Discord = require('discord.js');
-const {usage, warning} = require('../Storage/functions');
+const {usage, warning, getChannel, success} = require('../Storage/functions');
 
 module.exports = {
     name: 'kick',
@@ -9,7 +9,6 @@ module.exports = {
     enabled: true,
     execute(message, args){
         let user = (message.mentions.members.first())
-        let kickChannel = message.guild.channels.cache.get(config.channelIDs.modlogschannelID)
 
         if(!user) return usage(message, "kick [user] <reason> ", "Kick")
         if(!message.member.hasPermission("ADMINISTRATOR")) return warning(message, "You don't have permission")
@@ -22,8 +21,9 @@ module.exports = {
                 .setColor(config.general.embedColor)
                 .setDescription(`**Kicked:** ${user}\n **Kicked By:** ${message.author.tag}\n**Reason:** ${reason}`)
                 .setTimestamp(new Date())
-            if(!kickChannel){return warning(message, "Couldn't find Moderation Logs Channel")}
-            kickChannel.send(kickEmbed)
+            if(!getChannel(config.channelIDs.modlogschannelID)) return warning(message, "Couldn't find Moderation Logs Channel")
+            success(message, `${user} has been banned.`)
+            getChannel(config.channelIDs.modlogschannelID).send(kickEmbed)
             message.guild.member(user).kick(reason).catch(() => {
                 warning(message, "I don't have the correct permissions to kick this user.")
             })

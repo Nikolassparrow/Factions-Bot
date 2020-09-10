@@ -85,6 +85,7 @@ client.on('message', message => {
     const command = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     // order: prefix args commandName--> command
+
     if (!command) return;
 
     if (command.args && !args.length) {

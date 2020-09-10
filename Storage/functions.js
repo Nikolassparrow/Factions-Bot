@@ -59,7 +59,7 @@ module.exports =  {
             message.channel.send(embed); 
     },
 
-    getchannel: function(message, id){
+    getChannel: function(message, id){
         return message.guild.channels.cache.get(id)
     }
 

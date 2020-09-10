@@ -20,6 +20,7 @@ module.exports = {
             if (!chatData.chat.length) {
                 chatData.chat[0] = "Try Again";
             }
+
             let embedFshow = new Discord.MessageEmbed()
                 .setColor(config.general.embedColor)
                 .setDescription(`\`\`\`${chatData.chat.join('\n')}\`\`\``)

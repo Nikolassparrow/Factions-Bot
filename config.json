@@ -15,6 +15,7 @@
     "joinchannelID": "null",
     "leavechannelID": "null",
     "modlogschannelID": "null",
+    "whitelistlogsID": "null",
     "wallschannelID": "null",
     "bufferchannelID": "null"
   },

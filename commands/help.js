@@ -23,7 +23,7 @@ module.exports = {
             > Miscellaneous
             > Moderation
             `)
-            .setFooter(`Usage: ${JSON.parse(fs.readFileSync(`./config.json`)).prefix}help <Categories>`);
+            .setFooter(`Usage: ${JSON.parse(fs.readFileSync(`./config.json`)).general.prefix}help <Categories>`);
         message.channel.send(embed);
         return;
         }
@@ -79,7 +79,7 @@ module.exports = {
                     .filter(cmd => cmd.enabled === true && cmd.category === "Miscellaneous")
                     .forEach(cmd => commandDescriptions.push(cmd.description.charAt(0).toUpperCase() + cmd.description.slice(1)));
                 let embedHelp = new Discord.MessageEmbed()
-                    .setTitle("Help - Miscellaneous")
+                    .setTitle("Help - Misc")
                     .setColor(config.general.embedColor)
                     .addField("Commands⠀⠀⠀⠀⠀", commandNames, true)
                     .addField("Description", commandDescriptions, true);

@@ -11,7 +11,7 @@ module.exports = {
     enabled: JSON.parse(fs.readFileSync('./config.json')).enableCommands.baltop,
     execute(message, args, bot, chatData, saving, regex){
         saving.chat = true;
-        regex.regex = /^[0-9#]|[1-9#]|(Balancetop)/ig
+        regex.regex = /^[0-9#]|[1-9#]|(balancetop)/ig
         if (!args.length) {
             args[0] = "";
         }
